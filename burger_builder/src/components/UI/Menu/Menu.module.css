@@ -1,0 +1,25 @@
+.Menu {
+    background-color: #703b09;
+    padding: 2px;
+    height: 80%;
+    box-sizing: border-box;
+    border: radius 5px;
+}
+
+@media (min-width:500px) {
+    .Menu {
+        display: none;
+    }
+    .Menu img {
+        display: none;
+    }
+}
+
+
+/* .Menu:hover {
+    border-bottom: 2px solid blue;
+} */
+
+.Menu img {
+    height: 100%
+}
