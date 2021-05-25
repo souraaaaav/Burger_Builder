@@ -27,7 +27,7 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount(){
-        axios.get('https://react-burger-project-a7a97-default-rtdb.asia-southeast1.firebasedatabase.app/ingredients.json')
+        axios.get('/ingredients.json')
             .then(response=>{
                 this.setState({ingredients:response.data})
             })
@@ -84,37 +84,17 @@ class BurgerBuilder extends Component {
     }
 
     purchaseSuccessHandler=()=>{
-        this.setState({loading:true})
-        const order={
-            ingredients:this.state.ingredients,
-            price:this.state.totalPrice,
-            customer:{
-                name:'Sourav Debnath',
-                address:{
-                    street:'nimtola',
-                    zipcode:'1205',
-                    country:'Bangladesh'
-                },
-                email:'souravdebnath97@gmail.com'
-            }
+        
+        const queryParams= []
+        for(let i in this.state.ingredients){
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]))
         }
-
-        axios.post('/orders.json',order)
-            .then(res=>{
-                // console.log(res.data)
-                this.setState({loading:false , purchasing:false})
-                if(res.status===200){
-                alert('successfully purchased')
-                window.location.reload()
-                }
-                // return false
-
-            })
-            .catch(error=>{ 
-                this.setState({loading:false , purchasing:false})
-            
-            })
-
+        queryParams.push('price='+this.state.totalPrice)
+        const queryString = queryParams.join('&')
+        this.props.history.push({
+            pathname:'/checkout',
+            search:'?' + queryString
+        })
      
     }
 

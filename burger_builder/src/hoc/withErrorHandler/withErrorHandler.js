@@ -5,16 +5,11 @@ import Auxi from '../Auxi/Auxi'
 const withErrorHandler = (WrappedComponent,axios) =>{
     return class Error extends Component {
         
-        
         state={
             error:null
         }
-    
-  
 
-        errorConfirmedHandler = () =>{
-            this.setState({error:null})
-        }
+
        
         componentWillMount(){
             
@@ -28,7 +23,12 @@ const withErrorHandler = (WrappedComponent,axios) =>{
                 })
         }
 
+        errorConfirmedHandler = () =>{
+            this.setState({error:null})
+        }
+
         render(){
+            console.log('in error')
         return (
             <Auxi>
                     <Modal show={this.state.error}
