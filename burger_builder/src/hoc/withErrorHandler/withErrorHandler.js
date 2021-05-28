@@ -28,7 +28,7 @@ const withErrorHandler = (WrappedComponent,axios) =>{
         }
 
         render(){
-            console.log('in error')
+            
         return (
             <Auxi>
                     <Modal show={this.state.error}
