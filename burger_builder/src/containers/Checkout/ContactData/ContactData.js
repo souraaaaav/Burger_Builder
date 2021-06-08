@@ -5,6 +5,7 @@ import axios from '../../../axios-order'
 import Loader from '../../../components/UI/Loader/Loader'
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler'
 import Input from '../../../components/UI/Input/Input'
+import { connect } from 'react-redux'
 
 class ContactData extends Component {
     state = {
@@ -129,7 +130,7 @@ class ContactData extends Component {
         }
 
         const order = {
-            ingredients: this.props.ingredients,
+            ingredients: this.props.ing,
             price: this.props.price,
             userData: userOrderFormData,
         }
@@ -140,7 +141,7 @@ class ContactData extends Component {
                 this.setState({ loading: false })
                 if (res.status === 200) {
                     alert('successfully purchased')
-                    this.props.history.push('/')
+                    window.location.href="/"
                 }
                 // return false
 
@@ -155,7 +156,7 @@ class ContactData extends Component {
 
 
     inputChangedHandler = (event, elementIdentifier) => {
-       
+
         const updatedOrderForm = { ...this.state.orderForm }
         const updatedformElement = { ...updatedOrderForm[elementIdentifier] }
 
@@ -165,20 +166,20 @@ class ContactData extends Component {
             updatedformElement.validity = this.checkvalidity(updatedformElement.value, updatedformElement.validation)
         }
         updatedOrderForm[elementIdentifier] = updatedformElement
-        
-        let formValid=true
-        for (let key in updatedOrderForm){
-            formValid =updatedOrderForm[key].validity && formValid
-         
+
+        let formValid = true
+        for (let key in updatedOrderForm) {
+            formValid = updatedOrderForm[key].validity && formValid
+
         }
 
-        this.setState({ orderForm: updatedOrderForm,formIsValid:formValid})
-     
+        this.setState({ orderForm: updatedOrderForm, formIsValid: formValid })
+
 
     }
 
     render() {
-   
+
         const formElementArray = []
 
         for (let key in this.state.orderForm) {
@@ -208,7 +209,7 @@ class ContactData extends Component {
             form = <Loader />
         }
 
-    
+
         return (
             <div className={classes.ContactData}>
                 <h4>enter your contact data</h4>
@@ -216,7 +217,13 @@ class ContactData extends Component {
             </div>
         )
     }
-
 }
 
-export default withErrorHandler(ContactData, axios)
+const mapStateToProps = state => {
+    return {
+        ing: state.ingredients,
+        price: state.totalPrice
+    }
+}
+
+export default connect(mapStateToProps)(withErrorHandler(ContactData, axios))
