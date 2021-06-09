@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Button from '../../../components/UI/Button/Button'
 import classes from './ContactData.module.css'
 import axios from '../../../axios-order'
 import Loader from '../../../components/UI/Loader/Loader'
@@ -202,7 +201,8 @@ class ContactData extends Component {
                     changed={(event) => this.inputChangedHandler(event, formElement.id)}
                 />
             ))}
-            <Button btnType="Success" disabled={!this.state.formIsValid}>Order</Button>
+            <button type="submit" className={classes.OrderButton}
+                disabled={!this.state.formIsValid}><span className={classes.Order}>Order</span></button>
         </form>)
 
         if (this.state.loading) {

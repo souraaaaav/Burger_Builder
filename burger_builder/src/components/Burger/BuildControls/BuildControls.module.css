@@ -14,11 +14,16 @@
     font-size: 1rem;
 }
 
+.Order {
+    color: #00fff2;
+}
+
 .OrderButton {
-    background-color: #DAD735;
+    background-color: #da35baad;
     outline: none;
     cursor: pointer;
-    border: 1px solid #966909;
+    border: 2px solid transparent;
+    border-image: linear-gradient(to right, rgb(235, 4, 4), rgb(20, 227, 241)) 10;
     color: #966909;
     font-family: inherit;
     font-size: 1.2em;
