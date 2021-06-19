@@ -5,6 +5,8 @@ import Loader from '../../../components/UI/Loader/Loader'
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler'
 import Input from '../../../components/UI/Input/Input'
 import { connect } from 'react-redux'
+import {Redirect} from 'react-router-dom'
+import * as orderActions from '../../../store/actions/index'
 
 class ContactData extends Component {
     state = {
@@ -95,7 +97,6 @@ class ContactData extends Component {
                 validity: true
             },
         },
-        loading: false,
         formIsValid: false,
     }
 
@@ -121,8 +122,6 @@ class ContactData extends Component {
     }
 
     orderHandler = (event) => {
-
-        this.setState({ loading: true })
         const userOrderFormData = {}
         for (let key in this.state.orderForm) {
             userOrderFormData[key] = this.state.orderForm[key].value
@@ -134,23 +133,7 @@ class ContactData extends Component {
             userData: userOrderFormData,
         }
 
-        axios.post('/orders.json', order)
-            .then(res => {
-                // console.log(res.data)
-                this.setState({ loading: false })
-                if (res.status === 200) {
-                    alert('successfully purchased')
-                    window.location.href="/"
-                }
-                // return false
-
-            })
-            .catch(error => {
-                this.setState({ loading: false })
-                alert('Something Went Wrong')
-
-            })
-
+        this.props.onPurchaseBurger(order)
     }
 
 
@@ -179,6 +162,10 @@ class ContactData extends Component {
 
     render() {
 
+        if((this.props.ing===null && this.props.price===40)||this.props.purchased===true||this.props.orderable===false){
+            return <Redirect to="/"></Redirect>
+        }
+
         const formElementArray = []
 
         for (let key in this.state.orderForm) {
@@ -205,10 +192,11 @@ class ContactData extends Component {
                 disabled={!this.state.formIsValid}><span className={classes.Order}>Order</span></button>
         </form>)
 
-        if (this.state.loading) {
+        if (this.props.loading) {
             form = <Loader />
         }
 
+    
 
         return (
             <div className={classes.ContactData}>
@@ -221,9 +209,18 @@ class ContactData extends Component {
 
 const mapStateToProps = state => {
     return {
-        ing: state.ingredients,
-        price: state.totalPrice
+        ing: state.burgerBuilder.ingredients,
+        price: state.burgerBuilder.totalPrice,
+        loading: state.order.loading,
+        purchased:state.order.purchased,
+        orderable:state.burgerBuilder.orderable
     }
 }
 
-export default connect(mapStateToProps)(withErrorHandler(ContactData, axios))
+const mapDistpatchToProps = dispatch => {
+    return {
+        onPurchaseBurger: (orderData) => (dispatch(orderActions.purchaseBurger(orderData)))
+    }
+}
+
+export default connect(mapStateToProps, mapDistpatchToProps)(withErrorHandler(ContactData, axios))

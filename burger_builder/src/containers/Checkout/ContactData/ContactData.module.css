@@ -29,7 +29,7 @@
     font-family: inherit;
     font-size: 1.2em;
     padding: 15px 30px;
-    box-shadow: 2px 2px 2px #966909;
+    box-shadow: 2px 2px 2px rgb(186, 209, 228);
 }
 
 .OrderButton:hover,
