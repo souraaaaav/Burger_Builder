@@ -18,7 +18,7 @@ const SideDrawer= props =>{
             <div className={sideDrawerClass.join(' ')}>
                 <Logo height='11%' marginBottom='18px' clicked={props.clicked} />
                 <nav>
-                    <NavigationItems />
+                    <NavigationItems  isAuthenticated={props.isAuthenticated}/>
                 </nav>
             </div>
         </Auxi>

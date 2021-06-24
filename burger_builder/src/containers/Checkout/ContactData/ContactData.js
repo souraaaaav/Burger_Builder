@@ -131,9 +131,10 @@ class ContactData extends Component {
             ingredients: this.props.ing,
             price: this.props.price,
             userData: userOrderFormData,
+            userId:this.props.userId
         }
 
-        this.props.onPurchaseBurger(order)
+        this.props.onPurchaseBurger(order,this.props.token)
     }
 
 
@@ -162,7 +163,11 @@ class ContactData extends Component {
 
     render() {
 
-        if((this.props.ing===null && this.props.price===40)||this.props.purchased===true||this.props.orderable===false){
+        if((this.props.ing===null && this.props.price===40)){
+            return <Redirect to="/"></Redirect>
+        }
+
+        if((this.props.ing!==null && this.props.price!==40) && this.props.purchased===true){
             return <Redirect to="/"></Redirect>
         }
 
@@ -213,13 +218,15 @@ const mapStateToProps = state => {
         price: state.burgerBuilder.totalPrice,
         loading: state.order.loading,
         purchased:state.order.purchased,
-        orderable:state.burgerBuilder.orderable
+        orderable:state.burgerBuilder.orderable,
+        token:state.auth.token,
+        userId:state.auth.userId
     }
 }
 
 const mapDistpatchToProps = dispatch => {
     return {
-        onPurchaseBurger: (orderData) => (dispatch(orderActions.purchaseBurger(orderData)))
+        onPurchaseBurger: (orderData,token) => (dispatch(orderActions.purchaseBurger(orderData,token)))
     }
 }
 

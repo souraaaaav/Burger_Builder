@@ -1,35 +1,40 @@
-import React,{Component} from 'react'
+import React, { Component } from 'react'
 import Auxi from '../Auxi/Auxi'
 import classes from './Layout.module.css'
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar'
 import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer'
+import { connect } from 'react-redux'
 
 class Layout extends Component {
-    
+
     state = {
-        showBackDrop:false
+        showBackDrop: false
     }
 
-    hideBackDropHandler=()=>{
+    hideBackDropHandler = () => {
         this.setState({
-        showBackDrop:false     
+            showBackDrop: false
         })
     }
 
-    toggleMenuHandler=()=>{
-      let currentShow=this.state.showBackDrop
-      this.setState({
-          showBackDrop: !currentShow
-      })
+    toggleMenuHandler = () => {
+        let currentShow = this.state.showBackDrop
+        this.setState({
+            showBackDrop: !currentShow
+        })
     }
-    
-    render(){
 
-        return(
+    render() {
+
+        return (
             <Auxi>
-                <Toolbar toggleMenu={this.toggleMenuHandler}/>
-                <SideDrawer showAble={this.state.showBackDrop}
-                 clicked={this.hideBackDropHandler} />
+                <Toolbar
+                    isAuthenticated={this.props.isAuthenticated}
+                    toggleMenu={this.toggleMenuHandler} />
+                <SideDrawer
+                    isAuthenticated={this.props.isAuthenticated}
+                    showAble={this.state.showBackDrop}
+                    clicked={this.hideBackDropHandler} />
                 <main className={classes.Container}>
                     {this.props.children}
                 </main>
@@ -38,4 +43,10 @@ class Layout extends Component {
     }
 }
 
-export default Layout
+const mapStateToProps = state => {
+    return {
+        isAuthenticated: state.auth.token !== null
+    }
+}
+
+export default connect(mapStateToProps)(Layout)

@@ -10,11 +10,11 @@ class Checkout extends Component {
     }
 
     checkoutContinuedHandler = () => {
-        this.props.history.replace(this.props.location.pathname + '/contact-data')
+        this.props.history.push(this.props.location.pathname + '/contact-data')
     }
 
     render() {
-        if(this.props.ing===null||this.props.orderable===false){
+        if(this.props.ing===null){
             return <Redirect to="/"></Redirect>
         }
         return (

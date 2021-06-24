@@ -7,7 +7,7 @@ const Toolbar = (props) =>(
     <header className={classes.Toolbar}>
         <Menu toggleMenu={props.toggleMenu}/>
         <nav className={classes.MobileOnly}>
-            <NavigationItems />
+            <NavigationItems isAuthenticated={props.isAuthenticated}/>
         </nav>
     </header>
 )
