@@ -6,6 +6,7 @@ import { Redirect } from 'react-router'
 import * as authActions from '../../store/actions/index'
 import Button from '../../components/UI/Button/Button'
 import Loader from '../../components/UI/Loader/Loader'
+import { updatedObject, checkvalidity } from '../../shared/utility'
 
 class Auth extends Component {
 
@@ -46,46 +47,25 @@ class Auth extends Component {
         isSignUp: true
     }
 
-    componentDidMount(){
-        if(this.props.ingredients){
+    componentDidMount() {
+        if (this.props.ingredients) {
             this.props.onSetAuthRedirectPath("/checkout")
         }
-        else if(!this.props.buildingBurger&&this.props.authRedirectPath){
+        else if (!this.props.buildingBurger && this.props.authRedirectPath) {
             this.props.onSetAuthRedirectPath("/")
         }
     }
 
-    checkvalidity = (value, rules) => {
-        let isValid = true
-        if (rules.required) {
-            isValid = value.trim() !== '' && isValid
-        }
-
-        if (rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid
-        }
-
-        if (rules.maxLength) {
-            isValid = value.length <= rules.maxLength && isValid
-        }
-
-        if (rules.mailCheck) {
-            const copiedValue = value.trim()
-            isValid = copiedValue.match('@') && copiedValue.endsWith(".com") && isValid
-        }
-        return isValid
-    }
-
     inputChangedHandler = (event, controlName) => {
-        const updatedControls = {
-            ...this.state.controls,
+        const updatedControls = updatedObject(this.state.controls, {
             [controlName]: {
                 ...this.state.controls[controlName],
                 value: event.target.value,
-                validity: this.checkvalidity(event.target.value, this.state.controls[controlName].validation),
+                validity: checkvalidity(event.target.value, this.state.controls[controlName].validation),
                 touched: true,
             }
-        }
+        })
+
         let formValid = true
 
         for (let key in updatedControls) {
@@ -144,9 +124,9 @@ class Auth extends Component {
         if (this.props.error) {
             errorMessage = <h2 style={{ color: "red" }}>{this.props.error.message}</h2>
         }
-        let authRedirect=null;
-        if(this.props.isAuthenticated){
-            authRedirect=<Redirect to={this.props.authRedirectPath} />
+        let authRedirect = null;
+        if (this.props.isAuthenticated) {
+            authRedirect = <Redirect to={this.props.authRedirectPath} />
         }
 
         return (
@@ -167,17 +147,17 @@ const mapStateToProps = state => {
     return {
         loading: state.auth.loading,
         error: state.auth.error,
-        isAuthenticated:state.auth.token!==null,
-        buildingBurger:state.burgerBuilder.building,
-        authRedirectPath:state.auth.authRedirectPath,
-        ingredients:state.burgerBuilder.totalPrice>41
+        isAuthenticated: state.auth.token !== null,
+        buildingBurger: state.burgerBuilder.building,
+        authRedirectPath: state.auth.authRedirectPath,
+        ingredients: state.burgerBuilder.totalPrice > 41
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         onAuth: (email, password, isSignUp) => dispatch(authActions.auth(email, password, isSignUp)),
-        onSetAuthRedirectPath:(path)=>dispatch(authActions.setAuthRedirectPath(path))
+        onSetAuthRedirectPath: (path) => dispatch(authActions.setAuthRedirectPath(path))
     }
 }
 

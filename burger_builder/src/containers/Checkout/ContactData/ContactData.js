@@ -5,8 +5,9 @@ import Loader from '../../../components/UI/Loader/Loader'
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler'
 import Input from '../../../components/UI/Input/Input'
 import { connect } from 'react-redux'
-import {Redirect} from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import * as orderActions from '../../../store/actions/index'
+import { updatedObject, checkvalidity } from '../../../shared/utility'
 
 class ContactData extends Component {
     state = {
@@ -100,26 +101,7 @@ class ContactData extends Component {
         formIsValid: false,
     }
 
-    checkvalidity = (value, rules) => {
-        let isValid = true
-        if (rules.required) {
-            isValid = value.trim() !== '' && isValid
-        }
 
-        if (rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid
-        }
-
-        if (rules.maxLength) {
-            isValid = value.length <= rules.maxLength && isValid
-        }
-
-        if (rules.mailCheck) {
-            const copiedValue = value.trim()
-            isValid = copiedValue.match('@') && copiedValue.endsWith(".com") && isValid
-        }
-        return isValid
-    }
 
     orderHandler = (event) => {
         const userOrderFormData = {}
@@ -131,29 +113,29 @@ class ContactData extends Component {
             ingredients: this.props.ing,
             price: this.props.price,
             userData: userOrderFormData,
-            userId:this.props.userId
+            userId: this.props.userId
         }
 
-        this.props.onPurchaseBurger(order,this.props.token)
+        this.props.onPurchaseBurger(order, this.props.token)
     }
 
 
     inputChangedHandler = (event, elementIdentifier) => {
 
-        const updatedOrderForm = { ...this.state.orderForm }
-        const updatedformElement = { ...updatedOrderForm[elementIdentifier] }
 
-        updatedformElement.value = event.target.value
-        updatedformElement.touched = true
-        if (updatedformElement.validation) {
-            updatedformElement.validity = this.checkvalidity(updatedformElement.value, updatedformElement.validation)
-        }
-        updatedOrderForm[elementIdentifier] = updatedformElement
+        const updatedformElement = updatedObject(this.state.orderForm[elementIdentifier], {
+            value: event.target.value,
+            touched: true,
+            validity: checkvalidity(event.target.value, this.state.orderForm[elementIdentifier].validation)
+        })
+
+        const updatedOrderForm = updatedObject(this.state.orderForm, {
+            [elementIdentifier]: updatedformElement
+        })
 
         let formValid = true
         for (let key in updatedOrderForm) {
             formValid = updatedOrderForm[key].validity && formValid
-
         }
 
         this.setState({ orderForm: updatedOrderForm, formIsValid: formValid })
@@ -163,11 +145,11 @@ class ContactData extends Component {
 
     render() {
 
-        if((this.props.ing===null && this.props.price===40)){
+        if ((this.props.ing === null && this.props.price === 40)) {
             return <Redirect to="/"></Redirect>
         }
 
-        if((this.props.ing!==null && this.props.price!==40) && this.props.purchased===true){
+        if ((this.props.ing !== null && this.props.price !== 40) && this.props.purchased === true) {
             return <Redirect to="/"></Redirect>
         }
 
@@ -201,7 +183,7 @@ class ContactData extends Component {
             form = <Loader />
         }
 
-    
+
 
         return (
             <div className={classes.ContactData}>
@@ -217,16 +199,16 @@ const mapStateToProps = state => {
         ing: state.burgerBuilder.ingredients,
         price: state.burgerBuilder.totalPrice,
         loading: state.order.loading,
-        purchased:state.order.purchased,
-        orderable:state.burgerBuilder.orderable,
-        token:state.auth.token,
-        userId:state.auth.userId
+        purchased: state.order.purchased,
+        orderable: state.burgerBuilder.orderable,
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 }
 
 const mapDistpatchToProps = dispatch => {
     return {
-        onPurchaseBurger: (orderData,token) => (dispatch(orderActions.purchaseBurger(orderData,token)))
+        onPurchaseBurger: (orderData, token) => (dispatch(orderActions.purchaseBurger(orderData, token)))
     }
 }
 

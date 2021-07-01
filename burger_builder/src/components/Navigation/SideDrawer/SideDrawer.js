@@ -15,7 +15,7 @@ const SideDrawer= props =>{
     return(
         <Auxi>
             <BackDrop show={props.showAble} clicked={props.clicked}/>
-            <div className={sideDrawerClass.join(' ')}>
+            <div className={sideDrawerClass.join(' ')} onClick={props.clicked}>
                 <Logo height='11%' marginBottom='18px' clicked={props.clicked} />
                 <nav>
                     <NavigationItems  isAuthenticated={props.isAuthenticated}/>
