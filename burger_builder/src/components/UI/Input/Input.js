@@ -17,6 +17,15 @@ const Input = (props) => {
                 onChange={props.changed}
             />
             break;
+
+        case ('email'):
+            inputElement = <input className={inputClasses.join(' ')}
+                {...props.elementConfig}
+                value={props.value}
+                onChange={props.changed}
+            />
+            break;
+
         case ('textarea'):
             inputElement = <input className={inputClasses.join(' ')}
                 {...props.elementConfig}

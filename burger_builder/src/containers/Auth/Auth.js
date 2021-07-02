@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import classes from './Auth.module.css'
-import Input from '../../components/UI/Input/Input'
+import Input from '../../components/UI/Input/LoginInput/LoginInput'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
 import * as authActions from '../../store/actions/index'
-import Button from '../../components/UI/Button/Button'
+// import Button from '../../components/UI/Button/Button'
 import Loader from '../../components/UI/Loader/Loader'
 import { updatedObject, checkvalidity } from '../../shared/utility'
 
@@ -16,8 +16,7 @@ class Auth extends Component {
                 elementType: 'input',
                 elementConfig: {
                     type: 'email',
-                    placeholder: 'Your E-Mail',
-                    label: 'E-Mail'
+                    placeholder: 'email',
                 },
                 value: "",
                 validation: {
@@ -31,8 +30,7 @@ class Auth extends Component {
                 elementType: 'password',
                 elementConfig: {
                     type: 'password',
-                    placeholder: 'Your password',
-                    label: 'Password'
+                    placeholder: 'password',
                 },
                 value: "",
                 validation: {
@@ -98,11 +96,16 @@ class Auth extends Component {
                 config: this.state.controls[key]
             })
         }
-
+        let passwordMessage = null
+        if (this.state.controls.password.value.length < 6 &&
+            this.state.controls.password.touched &&
+            !this.state.isSignUp
+        ) {
+            passwordMessage = <p style={{paddingTop:"-10px",textAlign:"center"}}>minimum 6 characters</p>
+        }
         let form = (<form onSubmit={this.AuthHandler}>
             {formElementArray.map(formElement => (
                 <Input key={formElement.id}
-                    label={formElement.config.elementConfig.label}
                     elementType={formElement.config.elementType}
                     elementConfig={formElement.config.elementConfig}
                     value={formElement.config.value}
@@ -110,10 +113,14 @@ class Auth extends Component {
                     validationRequired={formElement.config.validation}
                     touched={formElement.config.touched}
                     changed={(event) => this.inputChangedHandler(event, formElement.id)}
+                    underlabel={passwordMessage}
                 />
             ))}
-            <button type="submit" className={classes.LoginButton}
-                disabled={!this.state.formIsValid}><span className={this.state.formIsValid ? classes.Login : null}>Login</span></button>
+            <div style={{ textAlign: "center" }}>
+                <button type="submit" className={classes.signinButton}
+                    disabled={!this.state.formIsValid}>
+                    <span style={this.state.formIsValid ? { color: "white" } : { color: "rgb(179,179,179)" }}>{this.state.isSignUp ? "log in" : "create account"}</span></button>
+            </div>
         </form>)
 
         if (this.props.loading) {
@@ -130,14 +137,25 @@ class Auth extends Component {
         }
 
         return (
-            <div className={classes.Auth}>
-                <h3>PLEASE {this.state.isSignUp ? "SIGN IN" : "SIGN UP"}</h3>
+            <div className={classes.loginBody}>
+            <div className={classes.loginDiv}>
+                <div className={classes.logo}></div>
+                <div className={classes.title}>Burger Builder</div>
+                <div className={classes.subTitle}>CR3W</div>
                 {errorMessage}
                 {authRedirect}
-                {form}
-                <Button btnType="Danger"
-                    btnClicked={this.switchModeHandler}
-                >SWITCH TO {this.state.isSignUp ? "SIGN UP" : "SIGN IN"} </Button>
+                <div className={classes.fields}>
+                    {form}
+                </div>
+
+                <div className={classes.link}>
+                    {this.state.isSignUp ? "Don't have account?" : "Already have account?"}
+                    <span onClick={this.switchModeHandler}>
+                        {this.state.isSignUp ? "Sign up" : "Log in"}
+                    </span>
+                </div>
+
+            </div>
             </div>
         )
     }

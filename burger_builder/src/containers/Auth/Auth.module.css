@@ -1,52 +1,105 @@
-.Auth {
-    margin: 20px auto;
-    width: 80%;
-    text-align: center;
-    box-shadow: 2px 3px 8px rgb(186, 209, 228);
-    border: 2px solid rgb(99, 90, 90);
-    border-image: linear-gradient(to right, rgb(88, 138, 231), rgb(118, 231, 197)) 10;
-    padding: 10px;
-    box-sizing: border-box;
-}
-
-@media (min-width:600px) {
-    .ContactData {
-        width: 500px;
-    }
-}
-
 .Login {
     color: #00fff2;
 }
 
-.LoginButton {
-    background-color: #da35baad;
+* {
+    box-sizing: border-box;
+}
+
+.loginBody {
+    height: 95vh;
+    width: 100%;
+    overflow: hidden;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    color: rgb(150, 66, 66);
+}
+
+.loginDiv {
+    width: 430px;
+    height: 650px;
+    padding: 20px 35px 35px 35px;
+    border-radius: 40px;
+    background: #ecf0f3;
+    box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #ffffff;
+}
+
+.logo {
+    background: url("../../assets/images/burger.png");
+    background-repeat: no-repeat;
+    background-position: 60%;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: auto;
+    box-shadow: /* logo shadow */
+    0px 0px 2px #5f5f5f, /* offset */
+    0px 0px 0px 5px #ecf0f3, /*bottom right */
+    8px 8px 15px #a7aaaf, /* top left */
+    -8px -8px 15px #ffffff;
+}
+
+.title {
+    text-align: center;
+    font-size: 28px;
+    padding-top: 24px;
+    letter-spacing: 0.5px;
+}
+
+.subTitle {
+    text-align: center;
+    font-size: 15px;
+    padding-top: 7px;
+    letter-spacing: 3px;
+}
+
+.fields {
+    width: 100%;
+    padding: 40px 5px 5px 5px;
+}
+
+.fields input {
+    border: none;
     outline: none;
+    font-size: 18px;
+    color: #555;
+    padding: 20px 10px 20px 5px;
+}
+
+.signinButton {
+    outline: none;
+    border: none;
     cursor: pointer;
-    border: 2px solid #966909;
-    border-image: linear-gradient(to right, rgb(88, 138, 231), rgb(118, 231, 197)) 10;
-    color: #966909;
-    font-family: inherit;
-    font-size: 1.2em;
-    padding: 15px 30px;
-    box-shadow: 2px 2px 2px rgb(186, 209, 228);
+    width: 60%;
+    height: 60px;
+    border-radius: 30px;
+    font-size: 20px;
+    font-weight: 700;
+    font-family: 'Lato', sans-serif;
+    color: #fff;
+    text-align: center;
+    background: #24cfaa;
+    box-shadow: 3px 3px 8px #b1b1b1, -3px -3px 8px #ffffff;
+    transition: 0.5s;
 }
 
-.LoginButton:hover,
-.LoginButton:active {
-    background-color: #A0DB41;
-    border: 1px solid #966909;
-    color: #966909;
+.signinButton:hover {
+    background: #2fdbb6;
 }
 
-.LoginButton:disabled {
-    background-color: #C7C6C6;
+.signinButton:active {
+    background: #1da88a;
+}
+
+.signinButton:disabled {
+    background: rgb(95, 93, 93);
     cursor: not-allowed;
-    border: 1px solid #ccc;
-    color: #888888;
 }
 
-.LoginButton:not(:disabled) {
+.signinButton:not(:disabled) {
     animation: enable 0.3s linear;
 }
 
@@ -59,5 +112,39 @@
     }
     100% {
         transform: scale(1);
+    }
+}
+
+.link {
+    padding-top: 20px;
+    color: #aaa;
+    text-align: center;
+}
+
+.link span {
+    text-decoration: none;
+    font-size: 20px;
+    color: rgb(160, 43, 43);
+    cursor: pointer;
+}
+
+@media screen and (max-width:475px) {
+    .loginDiv {
+        width: 330px;
+        height: 620px;
+        padding: 25px 35px 15px 35px;
+    }
+    .fields {
+        display: flex;
+        width: 72%;
+        padding: 30px 5px 5px 80px;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-content: space-around;
+        justify-content: center;
+        align-items: center;
+    }
+    .fields input {
+        padding: 20px 10px 20px 20px;
     }
 }

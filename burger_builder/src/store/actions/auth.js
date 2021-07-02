@@ -48,9 +48,9 @@ export const auth = (email, password, isSignUp) => {
             returnSecureToken: true
         }
 
-        let url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDJq3S-7rToIUoFEMnGpXmrQ5atONzkN_k"
+        let url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBwoC7suiSxXFtR5dzn-ffRGgjF9WRZEA4"
         if (isSignUp === true) {
-            url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDJq3S-7rToIUoFEMnGpXmrQ5atONzkN_k"
+            url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBwoC7suiSxXFtR5dzn-ffRGgjF9WRZEA4"
         }
 
         axios.post(url, authInfo)
@@ -59,7 +59,6 @@ export const auth = (email, password, isSignUp) => {
                 localStorage.setItem("token", response.data.idToken)
                 localStorage.setItem("expirationDate", expirationDate)
                 localStorage.setItem("userId", response.data.localId)
-
                 dispatch(authSuccess(response.data.idToken, response.data.localId))
                 dispatch(checkAuthTimeout(response.data.expiresIn))
             })

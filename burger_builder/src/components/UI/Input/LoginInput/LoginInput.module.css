@@ -1,0 +1,31 @@
+.Invalid {
+    background: #fa988d;
+}
+
+.InputElement {
+    width: 100%;
+    margin-top: 30px;
+    border-radius: 25px;
+    box-shadow: inset 8px 8px 8px #cbced1, inset -8px -8px 8px #ffffff;
+}
+
+svg {
+    height: 20px;
+    margin: 0 10px -3px 25px;
+}
+
+.InputElement:focus {
+    background: none;
+}
+
+@media screen and (max-width:475px) {
+    .InputElement {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-content: stretch;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 310px;
+    }
+}
